@@ -1,9 +1,8 @@
 const express = require('express');
+const serverless = require('serverless-http');
 const path = require('path');
 const cors = require('cors');
-
 const app = express();
-const port = 3000;
 
 const apiKey = 'ebfe7c3c7e29bf38d2d58eb6b7a5220ae490dd5449f6be4008dfb1866f98adab';
 
@@ -11,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Tentukan path ke direktori 'public'
-const publicDir = path.join(__dirname, 'public');
+const publicDir = path.join(__dirname, '../public');
 app.use(express.static(publicDir));
 
 // Rute untuk root URL
@@ -34,6 +33,4 @@ app.post('/track', async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Server berjalan di http://localhost:${port}`);
-});
+module.exports.handler = serverless(app);
