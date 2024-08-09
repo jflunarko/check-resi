@@ -32,7 +32,7 @@ exports.handler = async (event, context) => {
 
   try {
     // Replace this URL with the actual API endpoint you're using
-    const response = await fetch(`https://api.example.com/track?awb=${awb}&courier=${courier}`, {
+    const response = await fetch(`https://api.binderbyte.com/v1/track?api_key=${process.env.API_KEY}&courier=${courier}&awb=${awb}`, {
       headers: {
         'Authorization': `Bearer ${process.env.API_KEY}`,  // Example of using an API key from environment variables
       },
