@@ -9,11 +9,15 @@
 <body>
     <div class="container">
         <h1>Lacak Pengiriman</h1>
-        <input type="text" id="awbTextbox" placeholder="Masukkan nomor resi (AWB)">
+        <input type="text" id="awbTextbox" placeholder="Masukkan nomor resi">
         <select id="courierSelect">
             <option value="jne">JNE</option>
             <option value="jnt">JNT</option>
             <option value="sicepat">SiCepat</option>
+            <option value="anteraja">AnterAja</option>
+            <option value="spx">Shopee Express</option>
+            <option value="lion">Lion Parcel</option>
+            <option value="ide">ID Express</option>
         </select>
         <button onclick="trackShipment()">Kirim</button>
         <div id="result"></div>

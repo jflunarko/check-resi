@@ -1,5 +1,5 @@
 function trackShipment() {
-    clearResult();  // Bersihkan hasil sebelumnya
+ 
 
     const awb = document.getElementById('awbTextbox').value;
     const courier = document.getElementById('courierSelect').value;
@@ -19,10 +19,6 @@ function trackShipment() {
         console.error('Error:', error);
         document.getElementById('result').innerHTML = '<p>Terjadi kesalahan, silakan coba lagi.</p>';
     });
-}
-
-function clearResult() {
-    document.getElementById('result').innerHTML = '';
 }
 
 function displayResult(data) {
