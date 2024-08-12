@@ -26,16 +26,14 @@ router.get('/track', async (req, res) => {
         res.json(data);
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ error: 'Terjadi kesalahan, silakan coba lagi.' });
+        res.status(500).json({ error: 'Terjadi Kesalahan, silakan coba beberapa saat lagi.' });
     }
 });
 
-// Use '/.netlify/functions/server' when deploying on Netlify, otherwise use '/'
 const basePath = process.env.NODE_ENV === 'production' ? '/.netlify/functions/server' : '/';
 
 app.use(basePath, router);
 
-// Start the server if not running in serverless environment
 if (process.env.NODE_ENV !== 'production') {
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
@@ -43,4 +41,4 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
-module.exports = app; // Export the app for Netlify
+module.exports = app; 

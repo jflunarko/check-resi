@@ -3,5 +3,5 @@
 
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/server"
-  status = 200
+  to = "/functions/server"
+  status = 200  
