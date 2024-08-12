@@ -1,26 +1,23 @@
-require('dotenv').config();
-
 const express = require('express');
+const serverless = require('serverless-http');
 const path = require('path');
 const cors = require('cors');
+require('dotenv').config();
+
 const app = express();
-const port = process.env.PORT || 3000;
+const router = express.Router();
 
-
+const publicDir = path.join(__dirname, '../public');
 app.use(cors());
 app.use(express.json());
-
-const publicDir = path.join(__dirname, 'public');
 app.use(express.static(publicDir));
 
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
     res.sendFile(path.join(publicDir, 'index.html'));
 });
 
-app.get('/track', async (req, res) => {
-    // Mendapatkan awb dan courier dari query parameters
+router.get('/track', async (req, res) => {
     const { awb, courier } = req.query;
-
     const url = `https://api.binderbyte.com/v1/track?api_key=${process.env.API_KEY}&courier=${courier}&awb=${awb}`;
 
     try {
@@ -34,12 +31,6 @@ app.get('/track', async (req, res) => {
     }
 });
 
-if (process.env.NETLIFY) {
-    const serverless = require('serverless-http');
-    module.exports.handler = serverless(app);
-} else {
-    app.listen(port, () => {
-        console.log('API_KEY:', process.env.API_KEY);
-        console.log(`Server berjalan di http://localhost:${port}`);
-    });
-}
+app.use('/.netlify/functions/server', router);
+
+module.exports.handler = serverless(app);
