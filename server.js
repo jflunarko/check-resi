@@ -1,5 +1,4 @@
 const express = require('express');
-const serverless = require('serverless-http');
 const path = require('path');
 const cors = require('cors');
 require('dotenv').config();
@@ -7,7 +6,7 @@ require('dotenv').config();
 const app = express();
 const router = express.Router();
 
-const publicDir = path.join(__dirname, '../public');
+const publicDir = path.join(__dirname, './public');
 app.use(cors());
 app.use(express.json());
 app.use(express.static(publicDir));
@@ -31,6 +30,17 @@ router.get('/track', async (req, res) => {
     }
 });
 
-app.use('/.netlify/functions/server', router);
+// Use '/.netlify/functions/server' when deploying on Netlify, otherwise use '/'
+const basePath = process.env.NODE_ENV === 'production' ? '/.netlify/functions/server' : '/';
 
-module.exports.handler = serverless(app);
+app.use(basePath, router);
+
+// Start the server if not running in serverless environment
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
+}
+
+module.exports = app; // Export the app for Netlify
