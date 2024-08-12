@@ -17,8 +17,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(publicDir, 'index.html'));
 });
 
-app.post('/track', async (req, res) => {
-    const { awb, courier } = req.body;
+app.get('/track', async (req, res) => {
+    // Mendapatkan awb dan courier dari query parameters
+    const { awb, courier } = req.query;
+
     const url = `https://api.binderbyte.com/v1/track?api_key=${process.env.API_KEY}&courier=${courier}&awb=${awb}`;
 
     try {
@@ -37,6 +39,7 @@ if (process.env.NETLIFY) {
     module.exports.handler = serverless(app);
 } else {
     app.listen(port, () => {
+        console.log('API_KEY:', process.env.API_KEY);
         console.log(`Server berjalan di http://localhost:${port}`);
     });
 }

@@ -1,15 +1,14 @@
 function trackShipment() {
- 
-
     const awb = document.getElementById('awbTextbox').value;
     const courier = document.getElementById('courierSelect').value;
 
-    fetch('/track', {
-        method: 'POST',
+    const url = `/track?awb=${encodeURIComponent(awb)}&courier=${encodeURIComponent(courier)}`;
+
+    fetch(url, {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ awb, courier })
+        }
     })
     .then(response => response.json())
     .then(data => {
