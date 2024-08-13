@@ -16,19 +16,35 @@ router.get('/', (req, res) => {
 });
 
 router.get('/track', async (req, res) => {
-    const { awb, courier } = req.query;
-    const url = `https://api.binderbyte.com/v1/track?api_key=${process.env.API_KEY}&courier=${courier}&awb=${awb}`;
+    const { name } = req.query;
+    const url = `https://rickandmortyapi.com/api/character/?name=${encodeURIComponent(name)}`;
 
     try {
         const fetch = (await import('node-fetch')).default;
         const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Character not found');
+        }
         const data = await response.json();
-        res.json(data);
+        
+        if (data.results && data.results.length > 0) {
+            const character = data.results[0]; // Assuming we want the first match
+            const characterData = {
+                name: character.name,
+                gender: character.gender,
+                status: character.status,
+                image: character.image
+            };
+            res.json(characterData);
+        } else {
+            res.status(404).json({ error: 'Karakter tidak ditemukan.' });
+        }
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ error: 'Terjadi Kesalahan, silakan coba beberapa saat lagi.' });
     }
 });
+
 
 const basePath = process.env.NODE_ENV === 'production' ? '/.netlify/functions/server' : '/';
 
@@ -41,4 +57,4 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
-module.exports = app; 
+module
